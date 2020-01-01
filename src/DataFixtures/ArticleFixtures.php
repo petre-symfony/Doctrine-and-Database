@@ -8,10 +8,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class ArticleFixtures extends Fixture {
   public function load(ObjectManager $manager) {
-	  $article = new Article();
-	  $article->setTitle('Why Asteroids Taste Like Bacon')
-		  ->setSlug('why-asteroids-taste-like-bacon-'.rand(100, 999))
-		  ->setContent(<<<EOF
+  	for($i=0; $i<=10; $i++) {
+		  $article = new Article();
+		  $article->setTitle('Why Asteroids Taste Like Bacon')
+			  ->setSlug('why-asteroids-taste-like-bacon-'.rand(100, 999))
+			  ->setContent(<<<EOF
 Spicy **jalapeno bacon** ipsum dolor amet veniam shank in dolore. Ham hock nisi landjaeger cow,
 lorem proident [beef ribs](https://baconipsum.com/) aute enim veniam ut cillum pork chuck picanha. Dolore reprehenderit
 labore minim pork belly spare ribs cupim short loin in. Elit exercitation eiusmod dolore cow
@@ -27,18 +28,19 @@ strip steak pork belly aliquip capicola officia. Labore deserunt esse chicken lo
 cow est ribeye adipisicing. Pig hamburger pork belly enim. Do porchetta minim capicola irure pancetta chuck
 fugiat.
 EOF
-		  );
+			  );
 
-	  // publish most articles
-	  if (rand(1, 10) > 2) {
-		  $article->setPublishedAt(new \DateTime(sprintf('-%d days', rand(1, 100))));
+		  // publish most articles
+		  if (rand(1, 10) > 2) {
+			  $article->setPublishedAt(new \DateTime(sprintf('-%d days', rand(1, 100))));
+		  }
+
+		  $article->setAuthor('Mike Ferengi')
+			  ->setHeartCount(rand(5, 100))
+			  ->setImageFilename('asteroid.jpeg');
+
+			$manager->persist($article);
 	  }
-
-	  $article->setAuthor('Mike Ferengi')
-		  ->setHeartCount(rand(5, 100))
-		  ->setImageFilename('asteroid.jpeg');
-
-		$manager->persist($article);
 	  $manager->flush();
   }
 }
