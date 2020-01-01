@@ -47,7 +47,12 @@ class ArticleController extends AbstractController {
     $repository = $em->getRepository(Article::class);
     /** @var Article $article */
     $article = $repository->findOneBy(['slug' => $slug]);
-   
+
+	  if (!$article) {
+		  throw $this->createNotFoundException(sprintf('No article for slug "%s"', $slug));
+	  }
+	  dump($article);die;
+
     $articleContent = <<<EOF
 Spicy **jalapeno bacon** ipsum dolor amet veniam shank in dolore. Ham hock nisi landjaeger cow,
 lorem proident [beef ribs](https://baconipsum.com/) aute enim veniam ut cillum pork chuck picanha. Dolore reprehenderit
