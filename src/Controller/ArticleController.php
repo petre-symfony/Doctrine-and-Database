@@ -38,8 +38,8 @@ class ArticleController extends AbstractController {
   /**
    * @Route("/news/{slug}", name="article_show")
    */
-  public function show($slug, SlackClient $slack, EntityManagerInterface $em) {
-    if ($slug === 'khaaaaaan') {
+  public function show(Article $article, SlackClient $slack) {
+    if ($article->getSlug() === 'khaaaaaan') {
       $slack->sendMessage('Kahn', 'Ah, Kirk, my old friend...');
     }
 
@@ -48,14 +48,6 @@ class ArticleController extends AbstractController {
       'Woohoo! I\'m going on an all-asteroid diet!',
       'I like bacon too! Buy some from my site! bakinsomebacon.com',
     ];
-
-    $repository = $em->getRepository(Article::class);
-    /** @var Article $article */
-    $article = $repository->findOneBy(['slug' => $slug]);
-
-	  if (!$article) {
-		  throw $this->createNotFoundException(sprintf('No article for slug "%s"', $slug));
-	  }
 
     return $this->render('article/show.html.twig', [
       'article' => $article,
