@@ -22,17 +22,21 @@ class ArticleRepository extends ServiceEntityRepository {
     * @return Article[] Returns an array of Article objects
   */
   public function findAllPublishedOrderedByNewest() {
-    $qb =  $this->createQueryBuilder('a');
 
-    return $this->andIsPublishedQueryBuilder($qb)
+  	return $this->andIsPublishedQueryBuilder()
 	    ->orderBy('a.publishedAt', 'DESC')
       ->getQuery()
       ->getResult()
     ;
   }
 
-  private function andIsPublishedQueryBuilder(QueryBuilder $qb){
-		return $qb->andWhere('a.publishedAt IS NOT NULL');
+  private function andIsPublishedQueryBuilder(QueryBuilder $qb = null){
+		return $this->getOrCreateQueryBuilder($qb)
+			->andWhere('a.publishedAt IS NOT NULL');
+  }
+
+  private function getOrCreateQueryBuilder(QueryBuilder $qb = null){
+		return $qb ?: $this->createQueryBuilder('a');
   }
   /*
   public function findOneBySomeField($value): ?Article
