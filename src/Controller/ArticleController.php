@@ -28,7 +28,7 @@ class ArticleController extends AbstractController {
    */
   public function homepage(EntityManagerInterface $em) {
 		$repository = $em->getRepository(Article::class);
-		$articles = $repository->findBy([], ['publishedAt' => 'DESC']);
+		$articles = $repository->findAllPublishedOrderedByNewest();
 
     return $this->render('article/homepage.html.twig', [
     	'articles' => $articles
