@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Service\MarkdownHelper;
 use App\Service\SlackClient;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +33,7 @@ class ArticleController extends AbstractController {
   /**
    * @Route("/news/{slug}", name="article_show")
    */
-  public function show($slug, MarkdownHelper $markdownHelper, SlackClient $slack) {
+  public function show($slug, MarkdownHelper $markdownHelper, SlackClient $slack, EntityManagerInterface $em) {
     if ($slug === 'khaaaaaan') {
       $slack->sendMessage('Kahn', 'Ah, Kirk, my old friend...');
     }
@@ -42,6 +44,10 @@ class ArticleController extends AbstractController {
       'I like bacon too! Buy some from my site! bakinsomebacon.com',
     ];
 
+    $repository = $em->getRepository(Article::class);
+    /** @var Article $article */
+    $article = $repository->findOneBy(['slug' => $slug]);
+   
     $articleContent = <<<EOF
 Spicy **jalapeno bacon** ipsum dolor amet veniam shank in dolore. Ham hock nisi landjaeger cow,
 lorem proident [beef ribs](https://baconipsum.com/) aute enim veniam ut cillum pork chuck picanha. Dolore reprehenderit
