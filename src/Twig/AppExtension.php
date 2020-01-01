@@ -29,12 +29,13 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
   }
 
   public function processMarkdown($value) {
-    return $this->markdownHelper->parse($value);
+    return $this->container
+	    ->get(MarkdownHelper::class)->parse($value);
   }
 
 	public static function getSubscribedServices() {
 		return [
-
+			MarkdownHelper::class
 		];
 	}
 }
