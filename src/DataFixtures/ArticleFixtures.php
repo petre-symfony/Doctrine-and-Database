@@ -37,7 +37,7 @@ EOF
 			  ->setHeartCount(rand(5, 100))
 			  ->setImageFilename('asteroid.jpeg');
 	  });
-  	
+
 	  $manager->flush();
   }
 }
